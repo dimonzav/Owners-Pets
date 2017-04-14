@@ -1,20 +1,25 @@
-﻿using System;
-
-namespace DataAccess
+﻿namespace DataAccess
 {
+    using System;
     using System.Data;
     using System.Threading;
     using System.Threading.Tasks;
+    using DataAccess.Entities;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Storage;
-    using DataAccess.Entities;
 
-    public partial class DataContext : IdentityDbContext<ApplicationUser>
+    public partial class OwnerPetsContext : DbContext
     {
-        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        public OwnerPetsContext(DbContextOptions<OwnerPetsContext> options)
+            : base(options)
         {
         }
+
+        public virtual DbSet<Owner> Owners { get; set; }
+
+        public virtual DbSet<Pet> Pets { get; set; }
+
 
         public IDbContextTransaction BeginTransaction()
         {
@@ -36,8 +41,9 @@ namespace DataAccess
             return await base.SaveChangesAsync();
         }
 
-        public virtual DbSet<Owner> Owners { get; set; }
-
-        public virtual DbSet<Pet> Pets{ get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("Data Source=blogging.db");
+        }
     }
 }

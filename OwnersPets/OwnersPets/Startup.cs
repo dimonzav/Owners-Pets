@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
-namespace OwnersPets
+﻿namespace OwnersPets
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using DataAccess;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
+
     public class Startup
     {
         public Startup(IHostingEnvironment env)
@@ -19,7 +21,7 @@ namespace OwnersPets
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
-            Configuration = builder.Build();
+            this.Configuration = builder.Build();
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -27,6 +29,15 @@ namespace OwnersPets
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddEntityFrameworkSqlite()
+                .AddEntityFrameworkSqlServer()
+                .AddDbContext<OwnerPetsContext>(
+                    options =>
+                    {
+                        options.UseSqlite(this.Configuration["Data:ConnectionString"], o => o.MigrationsAssembly("OwnersPets.WebApi"));
+                    },
+                ServiceLifetime.Scoped);
+
             // Add framework services.
             services.AddMvc();
         }

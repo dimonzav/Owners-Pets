@@ -1,0 +1,41 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>All Users</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-4">
+            <input type="text" name="ownerName" ng-model="ctrl.newOwner" />
+        </div>
+        <div class="col-sm-2">
+            <button type="button" class="btn" ng-click="ctrl.addNewOwner()">Add</button>
+        </div>
+        <div class="col-sm-3"></div>
+    </div>
+    <div class="row">
+        <div>Total count: 13</div>
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Pets Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="owner in ctrl.owners">
+                    <td><a href="#!{{ownersPage}}" ng-click="ctrl.goToOwnersPage($index)">{{owner.name}}</a></td>
+                    <td>
+                        <span>{{owner.petsCount}}</span>
+                        <button type="button" class="btn pull-right" ng-click="ctrl.deleteOwner()">Delete</button>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        Pagination
+    </div>
+</div>

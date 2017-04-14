@@ -10,6 +10,8 @@
         [Required]
         public string Name { get; set; }
 
+        public string OwnerId { get; set; }
+
         public virtual Owner Owner { get; set; }
     }
 }

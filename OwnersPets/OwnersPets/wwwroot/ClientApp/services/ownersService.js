@@ -17,19 +17,19 @@
         return service;
 
         function getOwners() {
-            return $http.get('api/owners/GetOwner').then(response => {
+            return $http.get('api/Owners/GetOwner').then(response => {
                 return response;
             });
         }
 
         function addOwner(owner) {
-            return $http.post('api/owners/AddOwner', owner).then(response => {
+            return $http.post('api/Owners/AddOwner', owner).then(response => {
                 return response;
             });
         }
 
         function deleteOwner(ownerId) {
-            return $http.delete('api/owners/DeleteOwner?ownerId=' + ownerId).then(response => {
+            return $http.delete('api/Owners/DeleteOwner?ownerId=' + ownerId).then(response => {
                 return response;
             });
         }

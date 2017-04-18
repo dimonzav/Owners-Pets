@@ -1,4 +1,4 @@
-﻿var app = angular.module('ownersPetsApp', ['ngRoute', 'ngAnimate', 'ngSanitize']);
+﻿var app = angular.module('ownersPetsApp', ['ngRoute', 'ngAnimate', 'ngSanitize', 'ui.bootstrap']);
 
 app.config(['$routeProvider', '$httpProvider', '$locationProvider', function ($routeProvider, $httpProvider, $locationProvider) {
 

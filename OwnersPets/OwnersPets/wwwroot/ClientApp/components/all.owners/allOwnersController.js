@@ -3,11 +3,11 @@
 
     angular
         .module('ownersPetsApp')
-        .controller('ownersController', ownersController);
+        .controller('allOwnersController', allOwnersController);
 
-    ownersController.$inject = ['$location', 'ownersService'];
+    allOwnersController.$inject = ['$location', 'allOwnersService'];
 
-    function ownersController($location, ownersService) {
+    function allOwnersController($location, allOwnersService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'homeController';
@@ -15,27 +15,36 @@
         activate();
 
         function activate() {
-            vm.newOwner = "";
-            vm.owners = [
-                {
-                    ownerId: 1,
-                    name: "John",
-                    petsCount: 4
-                },
-                {
-                    ownerId: 2,
-                    name: "Jim",
-                    petsCount: 2
-                },
-                {
-                    ownerId: 3,
-                    name: "Madds",
-                    petsCount: 5
-                }];
+            vm.owners = [];
+            vm.newOwner = {
+                name: ""
+            }
+            vm.pagination = {
+                totalItems: 7,
+                currentPage: 1,
+                itemsPerPage: 3,
+                change: () => {
+                    vm.getOwners();
+                }
+            }
 
-            vm.addNewOwner = function () {
-                ownersService.getData().then(response => {
-                    vm.owners = response;
+            vm.getOwners = function () {
+                allOwnersService.getOwners(vm.pagination.currentPage, vm.pagination.itemsPerPage).then(response => {
+                    vm.owners = response.data.owners;
+                    vm.pagination.totalItems = response.data.totalItems;
+                });
+            }
+
+            vm.addOwner = function () {
+                allOwnersService.addOwner(vm.newOwner).then(response => {
+                    vm.owners.push(response.data);
+                    vm.newOwner = {};
+                });
+            }
+
+            vm.deleteOwner = function (index) {
+                allOwnersService.deleteOwner(vm.owners[index].ownerId).then(response => {
+                    vm.owners.splice(index, 1);
                 });
             }
 
@@ -43,6 +52,8 @@
                 let path = '/owner-pets/1';
                 $location.path('/owner-pets/').search({ ownerId: 1 });
             }
+
+            vm.getOwners();
 
         }
     }

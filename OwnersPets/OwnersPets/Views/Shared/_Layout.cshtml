@@ -35,6 +35,7 @@
         <script src="~/lib/angular-animate/angular-animate.js"></script>
         <script src="~/lib/angular-sanitize/angular-sanitize.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/lib/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
@@ -53,14 +54,15 @@
     </environment>
 
     <!--load app.js-->
-    <script src="~/ClientApp/app.js?v=6"></script>
+    <script src="~/ClientApp/app.js?v=7"></script>
 
     <!--load components-->
-    <script src="~/ClientApp/components/all.owners/allOwnersController.js"></script>
-    <script src="~/ClientApp/components/owner.pets/ownerPetsController.js"></script>
+    <script src="~/ClientApp/components/all.owners/allOwnersController.js?v=7"></script>
+    <script src="~/ClientApp/components/owner.pets/ownerPetsController.js?v=7"></script>
 
     <!--load services-->
-    <script src="~/ClientApp/services/ownersService.js?v=6"></script>
+    <script src="~/ClientApp/services/allOwnersService.js?v=7"></script>
+    <script src="~/ClientApp/services/ownerPetsService.js?v=7"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

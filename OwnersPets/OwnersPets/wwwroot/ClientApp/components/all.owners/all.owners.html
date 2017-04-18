@@ -7,10 +7,10 @@
     <div class="row">
         <div class="col-sm-3"></div>
         <div class="col-sm-4">
-            <input type="text" name="ownerName" ng-model="ctrl.newOwner" />
+            <input type="text" name="ownerName" ng-model="ctrl.newOwner.name" />
         </div>
         <div class="col-sm-2">
-            <button type="button" class="btn" ng-click="ctrl.addNewOwner()">Add</button>
+            <button type="button" class="btn" ng-click="ctrl.addOwner()">Add</button>
         </div>
         <div class="col-sm-3"></div>
     </div>
@@ -28,7 +28,7 @@
                     <td><a href="#!{{ownersPage}}" ng-click="ctrl.goToOwnersPage($index)">{{owner.name}}</a></td>
                     <td>
                         <span>{{owner.petsCount}}</span>
-                        <button type="button" class="btn pull-right" ng-click="ctrl.deleteOwner()">Delete</button>
+                        <button type="button" class="btn pull-right" ng-click="ctrl.deleteOwner($index)">Delete</button>
                     </td>
 
                 </tr>
@@ -36,6 +36,6 @@
         </table>
     </div>
     <div class="row">
-        Pagination
+        <ul uib-pagination direction-links="false" total-items="ctrl.pagination.totalItems" ng-model="ctrl.pagination.currentPage" num-pages="smallnumPages" ng-change="ctrl.pagination.change()"></ul>
     </div>
 </div>

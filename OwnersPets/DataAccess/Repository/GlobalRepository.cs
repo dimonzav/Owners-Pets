@@ -6,6 +6,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using DataAccess.Entities;
+    using DataAccess.Helpers;
     using Microsoft.EntityFrameworkCore;
 
     public class GlobalRepository
@@ -17,14 +18,26 @@
             this.context = context;
         }
 
-        public async Task<List<Owner>> GetOwnersAsync()
+        public async Task<ResponseResult<Owner>> GetOwnersAsync(int page, int itemsPerPage)
         {
-            return await this.context.Owners.ToListAsync();
+            int skip = this.Skip(page, itemsPerPage);
+
+            var items = await this.context.Owners.Skip(skip).Take(itemsPerPage).ToListAsync();
+
+            var totalItems = await this.context.Owners.CountAsync();
+
+            return new ResponseResult<Owner> { Items = items, TotalCount = totalItems };
         }
 
-        public async Task<bool> AddOwnerASync(Owner owner)
+        public async Task<Owner> GetOwnerByIdAsync(string ownerId)
+        {
+            return await this.context.Owners.Include(inc => inc.Pets).FirstOrDefaultAsync(o => o.OwnerId == ownerId);
+        }
+
+        public async Task<bool> AddOwnerAsync(Owner owner)
         {
             owner.OwnerId = Guid.NewGuid().ToString();
+
             this.context.Owners.Add(owner);
 
             return await this.context.SaveChangesAsync() > 0;
@@ -33,19 +46,31 @@
         public async Task<bool> DeleteOwnerAsync(string ownerId)
         {
             var ownerToDelete = this.context.Owners.Where(o => o.OwnerId == ownerId).FirstOrDefault();
-            this.context.Owners.Remove(ownerToDelete);
+
+            if (ownerToDelete != null)
+            {
+                this.context.Owners.Remove(ownerToDelete);
+            }
+
+            // var petsToDelete = this.context.Pets.Where(p => p.OwnerId == ownerId).ToList();
+
+            // this.context.Pets.RemoveRange(petsToDelete);
+
             return await this.context.SaveChangesAsync() > 0;
         }
 
-        public async Task<List<Pet>> GetOwnerPetsAsync(string ownerId)
+        public async Task<List<Pet>> GetOwnerPetsAsync(string ownerId, int page, int itemsPerPage)
         {
-            return await this.context.Pets.Where(p => p.OwnerId == ownerId).ToListAsync();
+            int skip = this.Skip(page, itemsPerPage);
+
+            return await this.context.Pets.Where(p => p.OwnerId == ownerId).Skip(skip).Take(itemsPerPage).ToListAsync();
         }
 
         public async Task<bool> AddOwnerPetAsync(Pet pet)
         {
             pet.PetId = Guid.NewGuid().ToString();
             this.context.Pets.Add(pet);
+
             return await this.context.SaveChangesAsync() > 0;
         }
 
@@ -54,6 +79,11 @@
             var petToDelete = this.context.Pets.Where(p => p.PetId == petId).FirstOrDefault();
             this.context.Pets.Remove(petToDelete);
             return await this.context.SaveChangesAsync() > 0;
+        }
+
+        private int Skip(int page, int itemsPerPage)
+        {
+            return (page - 1) * itemsPerPage;
         }
     }
 }

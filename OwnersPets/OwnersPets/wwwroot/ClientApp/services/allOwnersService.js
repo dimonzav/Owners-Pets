@@ -16,8 +16,8 @@
 
         return service;
 
-        function getOwners(page, itemsPerPage) {
-            return $http.get('api/Owners?page=' + page + '&itemsPerPage=' + itemsPerPage).then(response => {
+        function getOwners(page, itemsPerPage, isDesc) {
+            return $http.get('api/Owners?page=' + page + '&itemsPerPage=' + itemsPerPage + '&isDesc=' + isDesc).then(response => {
                 return response;
             });
         }

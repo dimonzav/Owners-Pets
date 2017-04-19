@@ -18,7 +18,6 @@
             vm.ownerId = $routeParams.ownerId;
             vm.owner = {};
             vm.ownerPets = [];
-            vm.totalCount = 0;
             vm.newOwnerPet = {
                 name: "",
                 ownerId: ""
@@ -31,33 +30,38 @@
                     vm.getOwnerPets();
                 }
             }
+            vm.isDesc = false;
 
             vm.getOwnerPets = function () {
-                ownerPetsService.getOwnerPets(vm.ownerId, vm.pagination.currentPage, vm.pagination.itemsPerPage).then(response => {
+                ownerPetsService.getOwnerPets(vm.ownerId, vm.pagination.currentPage, vm.pagination.itemsPerPage, vm.isDesc).then(response => {
                     vm.ownerPets = response.data.pets;
                     vm.owner = response.data;
                     vm.pagination.totalItems = response.data.petsCount;
-
-                    vm.totalCount += vm.ownerPets.length;
                 });
             }
 
             vm.addOwnerPet = function () {
                 vm.newOwnerPet.ownerId = vm.owner.ownerId;
                 ownerPetsService.addOwnerPet(vm.newOwnerPet).then(response => {
-                    vm.ownerPets.push(response.data);
+                    vm.getOwnerPets();
                     vm.newOwnerPet = {};
                 });
             }
 
             vm.deleteOwnerPet = function (index) {
                 ownerPetsService.deleteOwnerPet(vm.ownerPets[index].petId).then(response => {
-                    vm.ownerPets.splice(index, 1);
+                    vm.pagination.currentPage = 1;
+                    vm.getOwnerPets();
                 });
             }
 
             vm.backToAllOwners = function () {
                 $location.path('/owners');
+            }
+
+            vm.order = function () {
+                vm.isDesc = !vm.isDesc;
+                vm.getOwnerPets();
             }
 
             vm.getOwnerPets();

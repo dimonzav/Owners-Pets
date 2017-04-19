@@ -15,11 +15,13 @@
         <div class="col-sm-3"></div>
     </div>
     <div class="row total-count">
-        <div>Total count: {{ctrl.totalCount}}</div>
+        <div>Total count: {{ctrl.pagination.totalItems}}</div>
         <table class="table table-bordered table-striped table-hover outer-border">
             <thead>
                 <tr>
-                    <th>Name</th>
+                    <th>Name 
+                        <i class="pull-right clickable fa fa-caret-up" ng-show="!ctrl.isDesc" ng-click="ctrl.order()"></i>
+                        <i class="pull-right clickable fa fa-caret-down" ng-show="ctrl.isDesc" ng-click="ctrl.order()"></i></th>
                     <th>Pets Count</th>
                 </tr>
             </thead>
@@ -34,7 +36,7 @@
             </tbody>
         </table>
     </div>
-    <div class="row">
-        <ul uib-pagination direction-links="false" total-items="ctrl.pagination.totalItems" ng-model="ctrl.pagination.currentPage" num-pages="smallnumPages" ng-change="ctrl.pagination.change()"></ul>
+    <div class="row text-center">
+        <ul uib-pagination direction-links="false" total-items="ctrl.pagination.totalItems" items-per-page="ctrl.pagination.itemsPerPage" ng-model="ctrl.pagination.currentPage" ng-change="ctrl.pagination.change()"></ul>
     </div>
 </div>

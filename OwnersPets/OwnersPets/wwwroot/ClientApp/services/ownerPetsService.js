@@ -16,8 +16,8 @@
 
         return service;
 
-        function getOwnerPets(ownerId, page, itemsPerPage) {
-            return $http.get('api/Pets?ownerId=' + ownerId + '&page=' + page + '&itemsPerPage=' + itemsPerPage).then(response => {
+        function getOwnerPets(ownerId, page, itemsPerPage, isDesc) {
+            return $http.get('api/Pets?ownerId=' + ownerId + '&page=' + page + '&itemsPerPage=' + itemsPerPage + '&isDesc=' + isDesc).then(response => {
                 return response;
             });
         }

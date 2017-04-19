@@ -18,11 +18,20 @@
             this.context = context;
         }
 
-        public async Task<ResponseResult<Owner>> GetOwnersAsync(int page, int itemsPerPage)
+        public async Task<ResponseResult<Owner>> GetOwnersAsync(int page, int itemsPerPage, bool isDesc)
         {
             int skip = this.Skip(page, itemsPerPage);
 
-            var items = await this.context.Owners.Skip(skip).Take(itemsPerPage).ToListAsync();
+            var items = await this.context.Owners.OrderBy(o => o.Name.ToLower()).ToListAsync();
+
+            if (isDesc)
+            {
+                items = items.OrderByDescending(o => o.Name.ToLower()).Skip(skip).Take(itemsPerPage).ToList();
+            }
+            else
+            {
+                items = items.Skip(skip).Take(itemsPerPage).ToList();
+            }
 
             var totalItems = await this.context.Owners.CountAsync();
 
@@ -61,11 +70,22 @@
             return await this.context.SaveChangesAsync() > 0;
         }
 
-        public async Task<List<Pet>> GetOwnerPetsAsync(string ownerId, int page, int itemsPerPage)
+        public async Task<List<Pet>> GetOwnerPetsAsync(string ownerId, int page, int itemsPerPage, bool isDesc)
         {
             int skip = this.Skip(page, itemsPerPage);
 
-            return await this.context.Pets.Where(p => p.OwnerId == ownerId).Skip(skip).Take(itemsPerPage).ToListAsync();
+            var items = await this.context.Pets.Where(p => p.OwnerId == ownerId).OrderBy(o => o.Name.ToLower()).ToListAsync();
+
+            if (isDesc)
+            {
+                items = items.OrderByDescending(o => o.Name.ToLower()).Skip(skip).Take(itemsPerPage).ToList();
+            }
+            else
+            {
+                items = items.Skip(skip).Take(itemsPerPage).ToList();
+            }
+
+            return items;
         }
 
         public async Task<Pet> AddOwnerPetAsync(Pet pet)

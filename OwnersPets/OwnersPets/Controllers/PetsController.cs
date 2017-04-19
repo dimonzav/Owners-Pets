@@ -20,11 +20,11 @@ namespace OwnersPets.WebApi.Controllers
 
         // GET: api/Pets
         [HttpGet]
-        public async Task<IActionResult> GetOwnerPets(string ownerId, int page, int itemsPerPage)
+        public async Task<IActionResult> GetOwnerPets(string ownerId, int page, int itemsPerPage, bool isDesc)
         {
             List<PetModel> petModels = new List<PetModel>();
 
-            var ownerPetsDb = await this.globalRepository.GetOwnerPetsAsync(ownerId, page, itemsPerPage);
+            var ownerPetsDb = await this.globalRepository.GetOwnerPetsAsync(ownerId, page, itemsPerPage, isDesc);
 
             var owner = await this.globalRepository.GetOwnerByIdAsync(ownerId);
 

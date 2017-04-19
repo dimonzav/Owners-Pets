@@ -20,11 +20,11 @@ namespace OwnersPets.WebApi.Controllers
 
         // GET: api/Owners
         [HttpGet]
-        public async Task<IActionResult> GetOwners(int page, int itemsPerPage)
+        public async Task<IActionResult> GetOwners(int page, int itemsPerPage, bool isDesc)
         {
             List<OwnerModel> ownerModels = new List<OwnerModel>();
 
-            var ownersDb = await this.globalRepository.GetOwnersAsync(page, itemsPerPage);
+            var ownersDb = await this.globalRepository.GetOwnersAsync(page, itemsPerPage, isDesc);
 
             if (ownersDb.Items.Count > 0)
             {

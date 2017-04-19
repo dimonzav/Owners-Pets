@@ -16,6 +16,7 @@
 
         function activate() {
             vm.owners = [];
+            vm.totalCount = 0;
             vm.newOwner = {
                 name: ""
             }
@@ -32,6 +33,10 @@
                 allOwnersService.getOwners(vm.pagination.currentPage, vm.pagination.itemsPerPage).then(response => {
                     vm.owners = response.data.owners;
                     vm.pagination.totalItems = response.data.totalItems;
+
+                    for (let i = 0; i < vm.owners.length; i++) {
+                        vm.totalCount += vm.owners[i].petsCount;
+                    }
                 });
             }
 
@@ -49,12 +54,11 @@
             }
 
             vm.goToOwnersPage = function (index) {
-                let path = '/owner-pets/1';
-                $location.path('/owner-pets/').search({ ownerId: 1 });
+                let path = '/owner-pets/' + vm.owners[index].ownerId;
+                $location.path(path);
             }
 
             vm.getOwners();
-
         }
     }
 })();

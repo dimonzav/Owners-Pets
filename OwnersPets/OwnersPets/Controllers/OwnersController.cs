@@ -52,11 +52,18 @@ namespace OwnersPets.WebApi.Controllers
         {
             var ownerDb = (Owner)ownerModel;
 
-            var result = await this.globalRepository.AddOwnerAsync(ownerDb);
+            ownerDb = await this.globalRepository.AddOwnerAsync(ownerDb);
 
-            if (result)
+            if (ownerDb != null)
             {
-                return this.Ok(ownerModel);
+                OwnerModel model = new OwnerModel
+                {
+                    OwnerId = ownerDb.OwnerId,
+                    Name = ownerDb.Name,
+                    PetsCount = ownerDb.PetsCount
+                };
+
+                return this.Ok(model);
             }
 
             return this.BadRequest("Error add owner");

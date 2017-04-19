@@ -1,22 +1,22 @@
-﻿<div class="container">
+﻿<div class="container owner-component">
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12 text-center header-title">
             <h1>All Users</h1>
         </div>
     </div>
-    <div class="row">
+    <div class="row underline">
         <div class="col-sm-3"></div>
         <div class="col-sm-4">
-            <input type="text" name="ownerName" ng-model="ctrl.newOwner.name" />
+            <input type="text" class="form-control outer-border" name="ownerName" ng-model="ctrl.newOwner.name" placeholder="Enter Pet Owner's Name" />
         </div>
         <div class="col-sm-2">
-            <button type="button" class="btn" ng-click="ctrl.addOwner()">Add</button>
+            <button type="button" class="btn outer-border" ng-click="ctrl.addOwner()">Add</button>
         </div>
         <div class="col-sm-3"></div>
     </div>
-    <div class="row">
-        <div>Total count: 13</div>
-        <table class="table table-bordered table-striped table-hover">
+    <div class="row total-count">
+        <div>Total count: {{ctrl.totalCount}}</div>
+        <table class="table table-bordered table-striped table-hover outer-border">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -25,12 +25,11 @@
             </thead>
             <tbody>
                 <tr ng-repeat="owner in ctrl.owners">
-                    <td><a href="#!{{ownersPage}}" ng-click="ctrl.goToOwnersPage($index)">{{owner.name}}</a></td>
+                    <td><a href="" ng-click="ctrl.goToOwnersPage($index)">{{owner.name}}</a></td>
                     <td>
                         <span>{{owner.petsCount}}</span>
-                        <button type="button" class="btn pull-right" ng-click="ctrl.deleteOwner($index)">Delete</button>
+                        <button type="button" class="btn pull-right outer-border" ng-click="ctrl.deleteOwner($index)">Delete</button>
                     </td>
-
                 </tr>
             </tbody>
         </table>

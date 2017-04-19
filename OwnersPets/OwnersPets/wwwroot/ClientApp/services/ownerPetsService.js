@@ -16,14 +16,14 @@
 
         return service;
 
-        function getOwnerPets(ownerId) {
-            return $http.get('api/Pets/GetOwnerPets?ownerId=' + ownerId).then(response => {
+        function getOwnerPets(ownerId, page, itemsPerPage) {
+            return $http.get('api/Pets?ownerId=' + ownerId + '&page=' + page + '&itemsPerPage=' + itemsPerPage).then(response => {
                 return response;
             });
         }
 
         function addOwnerPet(pet) {
-            return $http.post('api/Pets/AddOwnerPet', pet).then(response => {
+            return $http.post('api/Pets/', pet).then(response => {
                 return response;
             });
         }

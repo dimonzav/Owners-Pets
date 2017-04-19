@@ -31,16 +31,16 @@
 
         public async Task<Owner> GetOwnerByIdAsync(string ownerId)
         {
-            return await this.context.Owners.Include(inc => inc.Pets).FirstOrDefaultAsync(o => o.OwnerId == ownerId);
+            return await this.context.Owners.FirstOrDefaultAsync(o => o.OwnerId == ownerId);
         }
 
-        public async Task<bool> AddOwnerAsync(Owner owner)
+        public async Task<Owner> AddOwnerAsync(Owner owner)
         {
             owner.OwnerId = Guid.NewGuid().ToString();
 
             this.context.Owners.Add(owner);
 
-            return await this.context.SaveChangesAsync() > 0;
+            return await Task.FromResult(owner);
         }
 
         public async Task<bool> DeleteOwnerAsync(string ownerId)
@@ -52,9 +52,9 @@
                 this.context.Owners.Remove(ownerToDelete);
             }
 
-            // var petsToDelete = this.context.Pets.Where(p => p.OwnerId == ownerId).ToList();
+            var petsToDelete = this.context.Pets.Where(p => p.OwnerId == ownerId).ToList();
 
-            // this.context.Pets.RemoveRange(petsToDelete);
+            this.context.Pets.RemoveRange(petsToDelete);
 
             return await this.context.SaveChangesAsync() > 0;
         }
@@ -66,18 +66,29 @@
             return await this.context.Pets.Where(p => p.OwnerId == ownerId).Skip(skip).Take(itemsPerPage).ToListAsync();
         }
 
-        public async Task<bool> AddOwnerPetAsync(Pet pet)
+        public async Task<Pet> AddOwnerPetAsync(Pet pet)
         {
             pet.PetId = Guid.NewGuid().ToString();
+
             this.context.Pets.Add(pet);
 
-            return await this.context.SaveChangesAsync() > 0;
+            var owner = await this.context.Owners.FirstOrDefaultAsync(o => o.OwnerId == pet.OwnerId);
+
+            owner.PetsCount++;
+
+            return pet;
         }
 
         public async Task<bool> DeleteOwnerPetAsync(string petId)
         {
             var petToDelete = this.context.Pets.Where(p => p.PetId == petId).FirstOrDefault();
+
             this.context.Pets.Remove(petToDelete);
+
+            var owner = await this.context.Owners.FirstOrDefaultAsync(o => o.OwnerId == petToDelete.OwnerId);
+
+            owner.PetsCount--;
+
             return await this.context.SaveChangesAsync() > 0;
         }
 

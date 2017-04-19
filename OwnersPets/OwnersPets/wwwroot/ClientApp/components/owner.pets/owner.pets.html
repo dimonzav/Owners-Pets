@@ -1,7 +1,7 @@
 ﻿<div class="container">
     <div class="row">
-        <div class="col-sm-12">
-            <h1>{{ownerName}}</h1>
+        <div class="col-sm-12 text-center header-title">
+            <h1>{{ctrl.owner.name}}'s pets</h1>
         </div>
     </div>
     <div class="col-sm-12">
@@ -10,26 +10,26 @@
     <div class="row">
         <div class="col-sm-3"></div>
         <div class="col-sm-4">
-            <input type="text" name="ownerName" ng-model="ctrl.newPetName" />
+            <input type="text" class="form-control outer-border" name="ownerName" ng-model="ctrl.newOwnerPet.name" placeholder="Enter Pet's Name'" />
         </div>
         <div class="col-sm-2">
-            <button type="button" class="btn" ng-click="ctrl.addOwnerPet()">Add</button>
+            <button type="button" class="btn outer-border" ng-click="ctrl.addOwnerPet()">Add</button>
         </div>
         <div class="col-sm-3"></div>
     </div>
     <div class="row">
-        <div>Total count: 13</div>
-        <table class="table table-bordered table-striped table-hover">
+        <div>Total count: {{totalCount}}</div>
+        <table class="table table-bordered table-striped table-hover outer-border">
             <thead>
                 <tr>
                     <th>Name</th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="pet in ctrl.pets">
+                <tr ng-repeat="pet in ctrl.ownerPets">
                     <td>
-                        <span>{{owner.name}}</span>
-                        <button type="button" class="btn pull-right" ng-click="ctrl.deletePet()">Delete</button>
+                        <span>{{pet.name}}</span>
+                        <button type="button" class="btn pull-right outer-border" ng-click="ctrl.deleteOwnerPet($index)">Delete</button>
                     </td>
                 </tr>
             </tbody>

@@ -563,7 +563,6 @@
     <None Include="wwwroot\ClientApp\components\all.owners\allOwnersController.js" />
     <None Include="wwwroot\ClientApp\components\owner.pets\owner.pets.html" />
     <None Include="wwwroot\ClientApp\components\owner.pets\ownerPetsController.js" />
-    <None Include="wwwroot\ClientApp\services\ownersService.js" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Business\Business.csproj" />

@@ -23,7 +23,7 @@
                 return new Pet
                 {
                     PetId = model.PetId,
-                    OwnerId = model.PetId,
+                    OwnerId = model.OwnerId,
                     Name = model.Name
                 };
             }

@@ -1,6 +1,6 @@
 ﻿var app = angular.module('ownersPetsApp', ['ngRoute', 'ngAnimate', 'ngSanitize', 'ui.bootstrap']);
 
-app.config(['$routeProvider', '$httpProvider', '$locationProvider', function ($routeProvider, $httpProvider, $locationProvider) {
+app.config(['$routeProvider', '$httpProvider', '$locationProvider', '$qProvider', function ($routeProvider, $httpProvider, $locationProvider, $qProvider) {
 
     $routeProvider.when("/owners", {
         title: 'All Users',
@@ -16,6 +16,7 @@ app.config(['$routeProvider', '$httpProvider', '$locationProvider', function ($r
 
     $routeProvider.otherwise({ redirectTo: "/owners" });
 
+    $qProvider.errorOnUnhandledRejections(false);
 
     // Disable Cache
     //initialize get if not there

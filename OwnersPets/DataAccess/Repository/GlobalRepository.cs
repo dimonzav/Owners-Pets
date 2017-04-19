@@ -40,6 +40,8 @@
 
             this.context.Owners.Add(owner);
 
+            await this.context.SaveChangesAsync();
+
             return await Task.FromResult(owner);
         }
 
@@ -75,6 +77,8 @@
             var owner = await this.context.Owners.FirstOrDefaultAsync(o => o.OwnerId == pet.OwnerId);
 
             owner.PetsCount++;
+
+            await this.context.SaveChangesAsync();
 
             return pet;
         }
